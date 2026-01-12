@@ -1,0 +1,67 @@
+# .gitignore for .NET projects - ignore non-source code files
+# Keeps build outputs, editor/IDE caches, logs and local env files out of Git
+
+# Build directories
+**/bin/
+**/obj/
+**/Debug/
+**/Release/
+**/publish/
+
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.csproj.user
+
+# VS Code
+.vscode/
+
+# Rider
+.idea/
+
+# NuGet
+*.nupkg
+packages/
+
+# Test results
+TestResults/
+*.trx
+*.coverage
+*.coveragexml
+
+# Logs
+*.log
+*.txt
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment / local settings / secrets
+appsettings.Development.json
+secrets.json
+.env
+*.local.env
+
+# Database files
+*.mdf
+*.ldf
+
+# Docker (local overrides)
+docker-compose.override.yml
+
+# Misc
+*.vsix
+*.cache
+*.pid
+
+# Ignore published artifacts if any
+**/publish/
+
+# Keep project files and source code tracked:
+# - *.sln
+# - *.csproj
+# - src files: *.cs, *.cshtml, *.razor, *.config, *.json (except development secrets above)
