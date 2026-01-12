@@ -10,10 +10,12 @@ namespace AirlineWeb.Controllers
     public class WebhookSubscriptionsController : ControllerBase
     {
         private readonly AirlineDbContext _db;
+        private readonly AutoMapper.IMapper _mapper;
 
-        public WebhookSubscriptionsController(AirlineDbContext db)
+        public WebhookSubscriptionsController(AirlineDbContext db, AutoMapper.IMapper mapper)
         {
             _db = db;
+            _mapper = mapper;
         }
 
         [HttpPost]
@@ -24,23 +26,12 @@ namespace AirlineWeb.Controllers
                 return BadRequest(ModelState);
             }
 
-            var entity = new WebhookSubscription
-            {
-                WebhookUrl = dto.WebhookUrl,
-                WebhookType = dto.WebhookType,
-            };
+            var entity = _mapper.Map<WebhookSubscription>(dto);
 
             _db.WebhookSubscriptions.Add(entity);
             await _db.SaveChangesAsync();
 
-            var responseDto = new WebhookSubscriptionDto
-            {
-                Id = entity.Id,
-                WebhookUrl = entity.WebhookUrl,
-                Secret = entity.Secret,
-                WebhookType = entity.WebhookType,
-                WebhookPublisher = entity.WebhookPublisher
-            };
+            var responseDto = _mapper.Map<WebhookSubscriptionDto>(entity);
 
             return CreatedAtAction(nameof(GetById), new { id = entity.Id }, responseDto);
         }
@@ -51,15 +42,7 @@ namespace AirlineWeb.Controllers
             var entity = await _db.WebhookSubscriptions.FirstOrDefaultAsync(x => x.Id == id);
             if (entity == null) return NotFound();
 
-            var dto = new WebhookSubscriptionDto
-            {
-                Id = entity.Id,
-                WebhookUrl = entity.WebhookUrl,
-                Secret = entity.Secret,
-                WebhookType = entity.WebhookType,
-                WebhookPublisher = entity.WebhookPublisher
-            };
-
+            var dto = _mapper.Map<WebhookSubscriptionDto>(entity);
             return Ok(dto);
         }
     }

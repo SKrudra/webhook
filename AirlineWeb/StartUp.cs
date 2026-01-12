@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using AirlineWeb.Data;
+using AutoMapper;
+using AirlineWeb.Mapping;
 
 namespace AirlineWeb
 {
@@ -15,6 +17,9 @@ namespace AirlineWeb
         {
             // Register the Airline DB context using connection string "DefaultConnection"
             builder.Services.AddAirlineDbContext(builder.Configuration);
+
+            // AutoMapper mappings
+            builder.Services.AddAutoMapper(typeof(MappingProfile));
 
             // Other service registrations can go here if needed
             builder.Services.AddControllers();
