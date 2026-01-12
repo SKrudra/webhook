@@ -1,0 +1,22 @@
+using System.ComponentModel.DataAnnotations;
+
+namespace AirlineWeb.Models
+{
+    public class WebhookSubscription
+    {
+        [Key]
+        public int Id { get; set; }
+
+        [Required]
+        public string WebhookUrl { get; set; } = string.Empty;
+
+        [Required]
+        public string Secret { get; set; } = string.Empty;
+
+        [Required]
+        public string WebhookType { get; set; } = string.Empty;
+
+        [Required]
+        public string WebhookPublisher { get; set; } = string.Empty;
+    }
+}

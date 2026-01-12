@@ -74,6 +74,62 @@ Or run from Visual Studio / VS Code (use the existing launch profiles in each pr
 
 ---
 
+## 🗄️ Database migrations & seed data
+The project uses EF Core. You can apply migrations automatically on app startup (the project calls `db.Database.Migrate()` in `StartUp.Configure`) or use the EF CLI to create and apply migrations manually.
+
+1) Install EF tooling (if needed):
+```powershell
+# one-time (if dotnet-ef is not installed)
+dotnet tool install --global dotnet-ef
+```
+
+2) Create a migration (example):
+```powershell
+# Creates migration files under AirlineWeb/Data/Migrations/WebhookInitialMigration
+dotnet ef migrations add WebhookInitialMigration --project AirlineWeb --startup-project AirlineWeb --output-dir Data/Migrations/WebhookInitialMigration
+```
+
+3) Apply migrations to the database:
+```powershell
+# Applies pending migrations to the database specified by DefaultConnection
+dotnet ef database update --project AirlineWeb --startup-project AirlineWeb
+```
+
+Alternative: run the app to apply migrations automatically (the app logs will show migration progress):
+```powershell
+# Run the web app which will apply migrations at startup
+dotnet run --project ./AirlineWeb --configuration Debug
+```
+
+4) Verify tables exist (example using sqlcmd):
+```powershell
+sqlcmd -S localhost -U sa -P "YourStrong!Passw0rd" -d AirlineDb -Q "SELECT name FROM sys.tables;"
+```
+
+Troubleshooting
+- If you see errors like `mssql: An exception occurred while executing a Transact-SQL statement or batch`:
+  - Confirm the `DefaultConnection` in `AirlineWeb/appsettings.Development.json` matches the SQL Server instance (port, SA password).
+  - Ensure SQL Server container is healthy: `docker ps` and `docker logs sqlserver`.
+  - Confirm your user has permissions and the database exists. `dotnet ef database update` will create the database if it does not exist.
+
+Seeding example (C#)
+- To add sample data after migrations, add this snippet to `StartUp.Configure` after `db.Database.Migrate()`:
+```csharp
+if (!db.WebhookSubscriptions.Any())
+{
+    db.WebhookSubscriptions.Add(new WebhookSubscription
+    {
+        WebhookUrl = "https://example.com/hook",
+        Secret = "changeme",
+        WebhookType = "sample.type",
+        WebhookPublisher = "sample"
+    });
+    db.SaveChanges();
+}
+```
+
+---
+
 ## 🧰 Helpful Commands
 - Bring up services: `docker compose up -d`
 - Stop services: `docker compose down`
