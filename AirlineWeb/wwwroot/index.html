@@ -1,0 +1,56 @@
+<!-- webhook registration form for PAN American Airlines -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PAN American Airlines Webhook Registration</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>PAN American Airlines Webhook Registration</h1>
+        <form id="webhookForm">
+            <label for="callbackUrl">Callback URL:</label>
+            <input type="url" id="callbackUrl" name="callbackUrl" required placeholder="https://your-callback-url.com/webhook">
+
+            <label for="eventType">Event Type:</label>
+            <select id="eventType" name="eventType" required>
+                <option value="FlightCreated">Flight Created</option>
+                <option value="FlightUpdated">Flight Updated</option>
+                <option value="FlightDeleted">Flight Deleted</option>
+            </select>
+
+            <button type="submit">Register Webhook</button>
+        </form>
+        <div id="responseMessage"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+<script>
+    document.getElementById('webhookForm').addEventListener('submit', async function    (event) {
+        event.preventDefault();
+        
+        const webhookUrl = document.getElementById('callbackUrl').value;
+        const webhookType = document.getElementById('eventType').value;
+
+        const response = await fetch('http://localhost:5052/api/webhooksubscriptions', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ webhookUrl, webhookType })
+        });
+
+        const result = await response.json();
+        const responseMessage = document.getElementById('responseMessage');
+        
+        if (response.ok) {
+            responseMessage.innerHTML = `<p class="success">Webhook registered successfully! Secret: ${result.secret}</p>`;
+        } else {
+            responseMessage.innerHTML = `<p class="error">Error: ${result.message}</p>`;
+        }
+    });
+</script>
+</html>

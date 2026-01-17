@@ -1,0 +1,33 @@
+@AirlineWeb_HostAddress = http://localhost:5052
+
+### Create a new webhook subscription
+POST {{AirlineWeb_HostAddress}}/api/webhooksubscriptions
+Content-Type: application/json
+
+{
+  "webhookUrl": "https://example.com/webhook",
+  "webhookType": "flight.booking.created"
+}
+
+###
+
+### Create another webhook subscription
+POST {{AirlineWeb_HostAddress}}/api/webhooksubscriptions
+Content-Type: application/json
+
+{
+  "webhookUrl": "https://example.com/webhook2",
+  "webhookType": "flight.booking.updated"
+}
+
+###
+
+### Get webhook subscription by secret
+GET {{AirlineWeb_HostAddress}}/api/webhooksubscriptions/f0fbebd7-fe0c-417c-b531-54d1bab5e515
+Accept: application/json
+
+###
+
+### Get another webhook subscription by secret
+GET {{AirlineWeb_HostAddress}}/api/webhooksubscriptions/6ba7b810-9dad-11d1-80b4-00c04fd430c8
+Accept: application/json

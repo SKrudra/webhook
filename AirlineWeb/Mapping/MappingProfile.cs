@@ -1,5 +1,6 @@
 using AutoMapper;
 using AirlineWeb.Models;
+using AirlineWeb.Dtos;
 
 namespace AirlineWeb.Mapping
 {
@@ -9,6 +10,9 @@ namespace AirlineWeb.Mapping
         {
             CreateMap<WebhookSubscription, WebhookSubscriptionDto>().ReverseMap();
             CreateMap<CreateWebhookSubscriptionDto, WebhookSubscription>();
+            CreateMap<CreateFlightDetailsDto, FlightDetails>();
+            CreateMap<UpdateFlightDetailsDto, FlightDetails>();
+            CreateMap<FlightDetails, FlightDetailsDto>().ReverseMap();
         }
     }
 }

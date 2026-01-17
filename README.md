@@ -130,6 +130,32 @@ if (!db.WebhookSubscriptions.Any())
 
 ---
 
+## 🌐 Testing REST APIs with HTTP Client Plugin
+
+This project uses the REST Client extension (HTTP Client) to test REST APIs directly from VS Code.
+
+### Prerequisites
+- Install the [REST Client](https://marketplace.visualstudio.com/items?itemName=humao.rest-client) extension by Huachao Mao in VS Code.
+
+### Using AirlineWeb.http
+
+The [AirlineWeb.http](AirlineWeb/AirlineWeb.http) file contains all REST API requests for the AirlineWeb service.
+
+**How to use:**
+1. Ensure AirlineWeb is running locally on `http://localhost:5052`
+2. Open `AirlineWeb.http` in VS Code
+3. Click the **Send Request** link that appears above each request to execute it
+4. View the response in the **Response** panel on the right side
+
+**Available Endpoints:**
+- `POST /api/webhooksubscriptions` - Create a new webhook subscription
+- `GET /api/webhooksubscriptions/{id}` - Get a webhook subscription by ID
+
+### Response Variables
+The HTTP file uses a variable `@AirlineWeb_HostAddress` that defaults to `http://localhost:5052`. You can modify this if your service runs on a different port.
+
+---
+
 ## 🧰 Helpful Commands
 - Bring up services: `docker compose up -d`
 - Stop services: `docker compose down`

@@ -18,6 +18,7 @@ namespace AirlineWeb.Data
         }
 
         public DbSet<WebhookSubscription> WebhookSubscriptions { get; set; } = null!;
+        public DbSet<FlightDetails> FlightDetails { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -30,6 +31,15 @@ namespace AirlineWeb.Data
                 entity.Property(e => e.Secret).IsRequired();
                 entity.Property(e => e.WebhookType).IsRequired();
                 entity.Property(e => e.WebhookPublisher).IsRequired();
+            });
+
+            modelBuilder.Entity<FlightDetails>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.FlightNumber).IsRequired();
+                entity.Property(e => e.Price)
+                      .HasColumnType("decimal(6,2)")
+                      .IsRequired();
             });
         }
     }

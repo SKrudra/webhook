@@ -30,6 +30,7 @@ namespace AirlineWeb
             // Apply pending EF Core migrations on startup (if any)
             try
             {
+                app.UseStaticFiles();
                 using var scope = app.Services.CreateScope();
                 var logger = scope.ServiceProvider.GetRequiredService<ILoggerFactory>().CreateLogger("StartUp");
                 var db = scope.ServiceProvider.GetRequiredService<AirlineDbContext>();

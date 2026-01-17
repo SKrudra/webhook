@@ -1,0 +1,42 @@
+@AirlineWeb_HostAddress = http://localhost:5052
+
+### Create a new flight detail
+POST {{AirlineWeb_HostAddress}}/api/flights
+Content-Type: application/json
+
+{
+  "FlightNumber": "PA101",
+  "Price": 100.00
+}
+
+###
+
+### Create another flight detail
+POST {{AirlineWeb_HostAddress}}/api/flights
+Content-Type: application/json
+
+{
+  "FlightNumber": "PA102",
+  "Price": 200.00
+}
+
+###
+
+### Get flight detail by flight number
+GET {{AirlineWeb_HostAddress}}/api/flights/PA101
+Accept: application/json
+
+###
+
+### Get another flight detail by flight number
+GET {{AirlineWeb_HostAddress}}/api/flights/PA102
+Accept: application/json
+
+### Update flight detail by flight id
+PUT {{AirlineWeb_HostAddress}}/api/flights/1
+Content-Type: application/json
+
+{
+  "FlightNumber": "PA101",
+  "Price": 150.00
+}
