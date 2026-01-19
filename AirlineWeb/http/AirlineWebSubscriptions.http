@@ -6,7 +6,7 @@ Content-Type: application/json
 
 {
   "webhookUrl": "https://example.com/webhook",
-  "webhookType": "flight.booking.created"
+  "webhookType": "FlightCreated"
 }
 
 ###
@@ -17,7 +17,7 @@ Content-Type: application/json
 
 {
   "webhookUrl": "https://example.com/webhook2",
-  "webhookType": "flight.booking.updated"
+  "webhookType": "FlightUpdated"
 }
 
 ###

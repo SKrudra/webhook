@@ -1,10 +1,11 @@
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using AirlineWeb.Data;
+using AirlineWeb.Models;
+using AirlineWeb.Dtos;
+
 namespace AirlineWeb.Controllers
 {
-    using Microsoft.AspNetCore.Mvc;
-    using Microsoft.EntityFrameworkCore;
-    using AirlineWeb.Data;
-    using AirlineWeb.Models;
-    using AirlineWeb.Dtos;
 
     [ApiController]
     [Route("api/[controller]")]

@@ -2,12 +2,25 @@ using RabbitMQ.Client;
 using System;
 using RabbitMQ.Client.Events;
 using System.Text;
+using System.Text.Json;
+using AirlineSendAgenet.Dtos;
+using AirlineSendAgenet.Client;
+using AirlineSendAgenet.Data;
 
 
 namespace AirlineSendAgenet.App
 {
     public class AppHost : IAppHost
     {
+        // add constructor to accept IWebhookClient and dbcontext
+        private readonly IWebhookClient _webhookClient;
+        private readonly AirlineDbContext _dbContext;
+        public AppHost(IWebhookClient webhookClient, AirlineDbContext dbContext)
+        {
+            _webhookClient = webhookClient;
+            _dbContext = dbContext;
+        }
+
         public void Run()
         {
             Console.WriteLine("AppHost is running...");
@@ -27,7 +40,29 @@ namespace AirlineSendAgenet.App
             {
                 var body = ea.Body.ToArray();
                 var message = Encoding.UTF8.GetString(body);
+                // deserialize the message into NotificationMessageDto from json
+                var notificationMessage = JsonSerializer.Deserialize<NotificationMessageDto>(message);
                 Console.WriteLine($"[x] Received: {message}");
+
+                var payload = new FlightDetailsChangePayloadDto
+                {
+                    Publisher = string.Empty,
+                    Secret = string.Empty,
+                    WebhookUrl = string.Empty,
+                    FlightNumber = notificationMessage.FlightNumber,
+                    WebhookType = notificationMessage.WebhookType,
+                    OldPrice = notificationMessage.OldPrice,
+                    NewPrice = notificationMessage.NewPrice,
+                };
+
+                foreach (var subscription in _dbContext.WebhookSubscriptions.Where(ws => ws.WebhookType == notificationMessage.WebhookType))
+                {
+                    payload.WebhookUrl = subscription.WebhookUrl;
+                    payload.Secret = subscription.Secret;
+                    payload.Publisher = subscription.WebhookPublisher;
+                    await _webhookClient.SendNotificationAsync(payload);
+                }
+
             };
 
             // Start consuming messages

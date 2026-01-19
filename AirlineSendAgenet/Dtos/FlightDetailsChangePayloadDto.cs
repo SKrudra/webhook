@@ -1,7 +1,8 @@
 namespace AirlineSendAgenet.Dtos
 {
-    public class NotificationMessageDto
+    public class FlightDetailsChangePayloadDto
     {
+        public string WebhookUrl { get; set; } = null!;
         public string Publisher { get; set; } = null!;
         public string Secret { get; set; } = null!;
         public string FlightNumber { get; set; } = string.Empty;

@@ -1,7 +1,8 @@
+using AirlineSendAgenet.Models;
 using Microsoft.EntityFrameworkCore;
 // using AirlineWeb.Models;
 
-namespace AirlineWeb.Data
+namespace AirlineSendAgenet.Data
 {
     /// <summary>
     /// EF Core DB context for the Airline application.
@@ -14,7 +15,7 @@ namespace AirlineWeb.Data
         {
         }
 
-        // public DbSet<WebhookSubscription> WebhookSubscriptions { get; set; } = null!;
+        public DbSet<WebhookSubscription> WebhookSubscriptions { get; set; } = null!;
         // public DbSet<FlightDetails> FlightDetails { get; set; } = null!;
 
         // protected override void OnModelCreating(ModelBuilder modelBuilder)

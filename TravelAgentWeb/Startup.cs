@@ -12,11 +12,9 @@ namespace TravelAgentWeb
             // Register the Travel Agent DB context using connection string "DefaultConnection"
             builder.Services.AddTravelAgentDbContext(builder.Configuration);
 
-            // AutoMapper mappings can go here if needed
-            // builder.Services.AddAutoMapper(typeof(MappingProfile));
-
             // Other service registrations can go here if needed
             builder.Services.AddControllers();
+            builder.Services.AddControllersWithViews();
         }
 
         public static void Configure(WebApplication app)

@@ -16,3 +16,6 @@ Content-Type: application/json
 
 ### GET test
 GET {{TravelAgentWeb_HostAddress}}/api/notifications/test
+
+### GET /weatherforecast
+GET {{TravelAgentWeb_HostAddress}}/weatherforecast
