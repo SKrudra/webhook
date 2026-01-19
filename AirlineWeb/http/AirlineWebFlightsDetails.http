@@ -38,5 +38,5 @@ Content-Type: application/json
 
 {
   "FlightNumber": "PA101",
-  "Price": 150.00
+  "Price": 250.00
 }

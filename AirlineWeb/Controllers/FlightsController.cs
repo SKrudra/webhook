@@ -56,17 +56,20 @@ namespace AirlineWeb.Controllers
             {
                 return BadRequest(ModelState);
             }
-
+            var newPrice = dto.Price;
             var entity = await _db.FlightDetails.FirstOrDefaultAsync(x => x.Id == id);
             if (entity == null) return NotFound();
-
+            var oldPrice = entity.Price;
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("Flight details updated: {0}, {1}.", oldPrice, dto.Price);
             _mapper.Map(dto, entity);
             await _db.SaveChangesAsync();
-            Console.WriteLine("Flight details updated: {0}, {1}.", entity.Price, dto.Price);
-            if (dto.Price != entity.Price)
+            Console.WriteLine("Flight details updated: {0}, {1}.", oldPrice, dto.Price);
+            Console.ResetColor();
+            if (newPrice != oldPrice)
             {
                 Console.WriteLine("Price change detected, sending notification...");
-                _messageBusClient.PublishNotification(new NotificationMessageDto { FlightNumber = entity.FlightNumber, OldPrice = entity.Price, NewPrice = dto.Price, Publisher = "AirlineWeb", Secret = "supersecret", WebhookType = "PriceUpdate" });
+                _messageBusClient.PublishNotification(new NotificationMessageDto { FlightNumber = entity.FlightNumber, OldPrice = oldPrice, NewPrice = dto.Price, Publisher = "AirlineWeb", Secret = "supersecret", WebhookType = "PriceUpdate" });
             }
             return NoContent();
         }

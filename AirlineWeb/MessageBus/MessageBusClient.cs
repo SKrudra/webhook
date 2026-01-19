@@ -25,34 +25,26 @@ namespace AirlineWeb.MessageBus
             try
             {
                 // Create connection (async in .NET 6+)
-                using var connection = factory.CreateConnectionAsync();
+                using var connection = factory.CreateConnectionAsync().Result;
 
                 // Create channel
-                using var channel = connection.Result.CreateChannelAsync();
+                using var channel = connection.CreateChannelAsync().Result;
 
                 Console.WriteLine("✅ RabbitMQ connection and channel created successfully.");
 
-                // Example: Declare a queue
-                // channel.ExchangeDeclare(
-                //     exchange: "test-exchange",
-                //     type: ExchangeType.Direct,
-                //     durable: true,
-                //     exclusive: false,
-                //     autoDelete: false,
-                //     arguments: null
-                // );
+                channel.ExchangeDeclareAsync(exchange: "airline_exchange", type: ExchangeType.Direct).Wait();
+
 
                 // Example: Publish a message
-                var message = "Hello from .NET 10!";
+                var message = notificationMessage.ToString();
                 var body = Encoding.UTF8.GetBytes(message);
 
-                // channel.BasicPublishAsync(
-                //     exchange: "test-exchange",
-                //     routingKey: "test-queue",
-                //     mandatory: false,
-                //     // basicProperties: null,
-                //     body: body
-                // );
+                channel.BasicPublishAsync(exchange: "airline_exchange",
+                    routingKey: "",
+                    mandatory: false,
+                    basicProperties: new BasicProperties { ContentType = "text/plain" },
+                    body: body,
+                    cancellationToken: CancellationToken.None);
 
                 Console.WriteLine($"📨 Sent: {message}");
             }

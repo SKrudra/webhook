@@ -1,0 +1,24 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AirlineSendAgenet", "AirlineSendAgenet.csproj", "{9C4666AE-A6AB-4AA2-DD2C-67207BC18675}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9C4666AE-A6AB-4AA2-DD2C-67207BC18675}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C4666AE-A6AB-4AA2-DD2C-67207BC18675}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C4666AE-A6AB-4AA2-DD2C-67207BC18675}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C4666AE-A6AB-4AA2-DD2C-67207BC18675}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {77FFC3BB-FCEC-4CB4-AAA7-BF414DCAF20F}
+	EndGlobalSection
+EndGlobal
