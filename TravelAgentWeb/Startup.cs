@@ -1,26 +1,22 @@
+using TravelAgentWeb.Models;
 using Microsoft.EntityFrameworkCore;
-using AirlineWeb.Data;
-using AirlineWeb.Mapping;
+using TravelAgentWeb.Data;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace AirlineWeb
+namespace TravelAgentWeb
 {
-    /// <summary>
-    /// Central startup helpers to register services and perform app initialization.
-    /// Kept separate to keep `Program.cs` minimal.
-    /// </summary>
     public static class StartUp
     {
         public static void ConfigureServices(WebApplicationBuilder builder)
         {
-            // Register the Airline DB context using connection string "DefaultConnection"
-            builder.Services.AddAirlineDbContext(builder.Configuration);
+            // Register the Travel Agent DB context using connection string "DefaultConnection"
+            builder.Services.AddTravelAgentDbContext(builder.Configuration);
 
-            // AutoMapper mappings
-            builder.Services.AddAutoMapper(typeof(MappingProfile));
+            // AutoMapper mappings can go here if needed
+            // builder.Services.AddAutoMapper(typeof(MappingProfile));
 
             // Other service registrations can go here if needed
             builder.Services.AddControllers();
-            builder.Services.AddSingleton<MessageBus.IMessageBusClient, MessageBus.MessageBusClient>();
         }
 
         public static void Configure(WebApplication app)
@@ -28,10 +24,9 @@ namespace AirlineWeb
             // Apply pending EF Core migrations on startup (if any)
             try
             {
-                app.UseStaticFiles();
                 using var scope = app.Services.CreateScope();
                 var logger = scope.ServiceProvider.GetRequiredService<ILoggerFactory>().CreateLogger("StartUp");
-                var db = scope.ServiceProvider.GetRequiredService<AirlineDbContext>();
+                var db = scope.ServiceProvider.GetRequiredService<TravelAgentDbContext>();
                 logger.LogInformation("Applying database migrations (if any)");
                 db.Database.Migrate();
                 logger.LogInformation("Database migrations applied");

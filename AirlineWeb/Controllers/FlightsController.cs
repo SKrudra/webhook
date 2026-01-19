@@ -12,11 +12,13 @@ namespace AirlineWeb.Controllers
     {
         private readonly AirlineDbContext _db;
         private readonly AutoMapper.IMapper _mapper;
+        private readonly MessageBus.IMessageBusClient _messageBusClient;
 
-        public FlightsController(AirlineDbContext db, AutoMapper.IMapper mapper)
+        public FlightsController(AirlineDbContext db, AutoMapper.IMapper mapper, MessageBus.IMessageBusClient messageBusClient)
         {
             _db = db;
             _mapper = mapper;
+            _messageBusClient = messageBusClient;
         }
 
         [HttpPost]
@@ -60,7 +62,12 @@ namespace AirlineWeb.Controllers
 
             _mapper.Map(dto, entity);
             await _db.SaveChangesAsync();
-
+            Console.WriteLine("Flight details updated: {0}, {1}.", entity.Price, dto.Price);
+            if (dto.Price != entity.Price)
+            {
+                Console.WriteLine("Price change detected, sending notification...");
+                _messageBusClient.PublishNotification(new NotificationMessageDto { FlightNumber = entity.FlightNumber, OldPrice = entity.Price, NewPrice = dto.Price, Publisher = "AirlineWeb", Secret = "supersecret", WebhookType = "PriceUpdate" });
+            }
             return NoContent();
         }
     }

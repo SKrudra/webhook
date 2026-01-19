@@ -1,6 +1,18 @@
 @TravelAgentWeb_HostAddress = http://localhost:5194
 
-GET {{TravelAgentWeb_HostAddress}}/weatherforecast/
-Accept: application/json
+### Webhook Notification for Flight Details Updated
+POST {{TravelAgentWeb_HostAddress}}/api/notifications
+Content-Type: application/json
 
-###
+{
+  "publisher": "PAN American Airways",
+  "secret": "s3cr3tK3y",
+  "flightNumber": "AA123",
+  "oldPrice": 500.00,
+  "newPrice": 450.00,
+  "webhookType": "flight_details_updated"
+}
+
+
+### GET test
+GET {{TravelAgentWeb_HostAddress}}/api/notifications/test
